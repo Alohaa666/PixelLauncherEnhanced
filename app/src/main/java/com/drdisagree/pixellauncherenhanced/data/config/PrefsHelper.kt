@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.drdisagree.pixellauncherenhanced.data.common.Constants.DEVELOPER_OPTIONS
+import com.drdisagree.pixellauncherenhanced.data.common.Constants.FIXED_RECENTS_BUTTONS_WIDTH
+import com.drdisagree.pixellauncherenhanced.data.common.Constants.RECENTS_CLEAR_ALL_BUTTON
 import com.drdisagree.pixellauncherenhanced.data.common.Constants.XPOSED_HOOK_CHECK
 import com.drdisagree.pixellauncherenhanced.data.config.RPrefs.getBoolean
 import com.drdisagree.pixellauncherenhanced.data.config.RPrefs.getSliderFloat
@@ -20,6 +22,8 @@ object PrefsHelper {
             XPOSED_HOOK_CHECK -> !getBoolean(key)
 
             DEVELOPER_OPTIONS -> isPixelLauncher
+
+            FIXED_RECENTS_BUTTONS_WIDTH -> getBoolean(RECENTS_CLEAR_ALL_BUTTON)
 
             else -> true
         }

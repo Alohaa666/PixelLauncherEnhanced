@@ -1,20 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PixelLauncher Enhanced</string>
     <string name="app_moto">Раскройте весь потенциал вашего лаунчера</string>
-
     <string name="icon">Иконки</string>
     <string name="more">Еще</string>
     <string name="exit">Выход</string>
     <string name="learn_more">Еще больше</string>
     <string name="attention">Внимание</string>
     <string name="opt_default">(По умолчанию)</string>
-    <string name="opt_selected1" translatable="false">%s</string>
-    <string name="opt_selected2" translatable="false">%1$s%2$s</string>
-    <string name="opt_selected3" translatable="false">%1$s%2$s %3$s</string>
     <string name="btn_pick_image">Выбрать изображение</string>
     <string name="understood">Понял</string>
     <string name="settings_title">Настройки</string>
-
     <string name="root_connection_failed_title">Отсутствует рут доступ</string>
     <string name="root_connection_failed_desc">Не удается получить рут. Пожалуйста, предоставьте рут доступ и повторите попытку.</string>
     <string name="lsposed_warn">Включите модуль в Xposed и принудительно закройте программу.</string>
@@ -24,16 +20,12 @@
     <string name="xposed_module_bootlooped_title">Обнаружен Bootloop</string>
     <string name="xposed_module_bootlooped_desc">Модуль был отключен</string>
     <string name="force_close_launcher">Принудительно закрыть лаунчер</string>
-
-    <string name="version_codes" translatable="false">%s (#%d)</string>
     <string name="news">Новости</string>
     <string name="support">Поддержка</string>
     <string name="github">GitHub</string>
-    <string name="dev_name" translatable="false">DrDisagree</string>
     <string name="dev_bio">Learner | Developer | Designer</string>
     <string name="buymeacoffee_title">Нравится приложение?</string>
     <string name="buymeacoffee_desc">Подумай о том, чтобы угостить меня кофе</string>
-
     <string name="fragment_icons_title">Иконки</string>
     <string name="fragment_icons_desc">Настройка размера иконок</string>
     <string name="fragment_home_screen_title">Домашний экран</string>
@@ -46,7 +38,6 @@
     <string name="fragment_miscellaneous_desc">Другие настройки</string>
     <string name="fragment_about_title">О приложении</string>
     <string name="fragment_about_desc">Об этом приложении</string>
-
     <string name="force_themed_icons_title">Тематические значки</string>
     <string name="force_themed_icons_desc">Создает тематические значки, если они не предусмотрены приложением</string>
     <string name="launcher_icon_size_title">Размер иконок</string>
@@ -63,8 +54,8 @@
     <string name="app_drawer_icon_labels_title">Подпись иконок в меню приложений</string>
     <string name="disable_recents_live_tile_title">Отключить живую плитку в недавних</string>
     <string name="disable_recents_live_tile_desc">Отключите живую плитку, если экран недавних глючит</string>
-    <string name="hide_at_a_glance_title">Скрыть "Самое главное"</string>
-    <string name="hide_at_a_glance_desc">Скрывает виджет "Самое главное"</string>
+    <string name="hide_at_a_glance_title">Скрыть \"Самое главное\"</string>
+    <string name="hide_at_a_glance_desc">Скрывает виджет \"Самое главное\"</string>
     <string name="hide_desktop_search_bar_title">Скрыть строку поиска</string>
     <string name="hide_desktop_search_bar_desc">Скрыть панель поиска из дока на рабочем столе</string>
     <string name="dock_spacing_title">Отступ дока</string>
@@ -82,6 +73,7 @@
     <string name="layout_is_locked">Разметка заблокирована!</string>
     <string name="drawer_search_title">Строка поиска</string>
     <string name="drawer_search_desc">Строка поиска в меню приложений</string>
-    <string name="clear_all_button_title">Кнопка "Очистить все"</string>
+    <string name="clear_all_button_title">Кнопка \"Очистить все\"</string>
+    <string name="fixed_button_width_title">Fixed width for each button</string>
     <string name="recents_clear_all">Очистить</string>
 </resources>

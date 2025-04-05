@@ -18,6 +18,7 @@ object Constants {
     const val XPOSED_HOOK_CHECK = "xposed_hook_check"
     const val ACTION_HOOK_CHECK_REQUEST = "${BuildConfig.APPLICATION_ID}.ACTION_HOOK_CHECK_REQUEST"
     const val ACTION_HOOK_CHECK_RESULT = "${BuildConfig.APPLICATION_ID}.ACTION_HOOK_CHECK_RESULT"
+    const val ACTION_APP_LIST_UPDATED = "${BuildConfig.APPLICATION_ID}.ACTION_APP_LIST_UPDATED"
     const val FORCE_THEMED_ICONS = "xposed_forcethemedicons"
     const val APP_DRAWER_THEMED_ICONS = "xposed_appdrawerthemedicons"
     const val APP_DRAWER_BACKGROUND_OPACITY = "xposed_appdrawerbackgroundopacity"
@@ -39,6 +40,9 @@ object Constants {
     const val LOCK_LAYOUT = "xposed_locklayout"
     const val DRAWER_SEARCH_BAR = "xposed_drawersearchbar"
     const val RECENTS_CLEAR_ALL_BUTTON = "xposed_recentsclearallbutton"
+    const val FIXED_RECENTS_BUTTONS_WIDTH = "xposed_fixedrecentsbuttonswidth"
+    const val APP_BLOCK_LIST = "xposed_appblocklist"
+    const val SEARCH_HIDDEN_APPS = "xposed_searchhiddenapps"
 
     val PREF_UPDATE_EXCLUSIONS = listOf(
         BootLoopProtector.LOAD_TIME_KEY_KEY,

@@ -8,6 +8,11 @@
         app:iconSpaceReserved="false" />
 
     <com.drdisagree.pixellauncherenhanced.ui.preferences.SwitchPreference
+        android:key="xposed_fixedrecentsbuttonswidth"
+        android:title="@string/fixed_button_width_title"
+        app:iconSpaceReserved="false" />
+
+    <com.drdisagree.pixellauncherenhanced.ui.preferences.SwitchPreference
         android:key="xposed_disablerecentslivetile"
         android:summary="@string/disable_recents_live_tile_desc"
         android:title="@string/disable_recents_live_tile_title"

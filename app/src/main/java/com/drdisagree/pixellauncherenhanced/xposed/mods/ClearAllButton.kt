@@ -2,17 +2,22 @@ package com.drdisagree.pixellauncherenhanced.xposed.mods
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import com.drdisagree.pixellauncherenhanced.R
+import com.drdisagree.pixellauncherenhanced.data.common.Constants.FIXED_RECENTS_BUTTONS_WIDTH
 import com.drdisagree.pixellauncherenhanced.data.common.Constants.RECENTS_CLEAR_ALL_BUTTON
 import com.drdisagree.pixellauncherenhanced.xposed.HookRes.Companion.modRes
 import com.drdisagree.pixellauncherenhanced.xposed.ModPack
-import com.drdisagree.pixellauncherenhanced.xposed.mods.toolkit.Helpers.toPx
+import com.drdisagree.pixellauncherenhanced.xposed.mods.LauncherUtils.Companion.restartLauncher
 import com.drdisagree.pixellauncherenhanced.xposed.mods.toolkit.XposedHook.Companion.findClass
 import com.drdisagree.pixellauncherenhanced.xposed.mods.toolkit.callMethod
 import com.drdisagree.pixellauncherenhanced.xposed.mods.toolkit.callStaticMethodSilently
@@ -24,20 +29,23 @@ import de.robv.android.xposed.XposedHelpers.findMethodBestMatch
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import java.lang.reflect.Method
 
-
 class ClearAllButton(context: Context) : ModPack(context) {
 
     private var clearAllButton = false
+    private var fixedButtonWidth = false
     private var recentsViewInstance: Any? = null
     private var actionClearAllButton: Button? = null
 
     override fun updatePrefs(vararg key: String) {
         Xprefs.apply {
             clearAllButton = getBoolean(RECENTS_CLEAR_ALL_BUTTON, false)
+            fixedButtonWidth = clearAllButton && getBoolean(FIXED_RECENTS_BUTTONS_WIDTH, false)
         }
 
         when (key.firstOrNull()) {
             RECENTS_CLEAR_ALL_BUTTON -> updateVisibility()
+
+            FIXED_RECENTS_BUTTONS_WIDTH -> restartLauncher(mContext)
         }
     }
 
@@ -149,7 +157,13 @@ class ClearAllButton(context: Context) : ModPack(context) {
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
-                        marginStart = mContext.toPx(18)
+                        marginStart = mContext.resources.getDimensionPixelSize(
+                            mContext.resources.getIdentifier(
+                                "overview_actions_button_spacing",
+                                "dimen",
+                                mContext.packageName
+                            )
+                        )
                     }
                     setCompoundDrawablesWithIntrinsicBounds(
                         modRes.getDrawable(R.drawable.ic_clear_all),
@@ -162,8 +176,18 @@ class ClearAllButton(context: Context) : ModPack(context) {
                     }
                 }
 
-                updateVisibility()
                 mActionButtons.addView(actionClearAllButton)
+
+                if (fixedButtonWidth) {
+                    mActionButtons.children.forEach { child ->
+                        if (child is Button) {
+                            child.maxLines = 1
+                            child.ellipsize = TextUtils.TruncateAt.END
+                        }
+                    }
+                }
+
+                updateVisibility()
             }
     }
 
@@ -175,21 +199,57 @@ class ClearAllButton(context: Context) : ModPack(context) {
             actionClearAllButton?.visibility = View.GONE
         }
 
-        (actionClearAllButton?.parent as? LinearLayout)?.children?.forEach { child ->
-            val params = child.layoutParams as ViewGroup.MarginLayoutParams
+        if (fixedButtonWidth) {
+            val parentView = (actionClearAllButton?.parent as? ViewGroup)?.apply {
+                layoutParams?.width = ViewGroup.LayoutParams.MATCH_PARENT
+            }
+            val containerTag = "action_button_container"
 
-            if (params.marginStart != 0) {
-                params.marginStart = if (clearAllButton) mContext.toPx(18)
-                else mContext.resources.getDimensionPixelSize(
-                    mContext.resources.getIdentifier(
-                        "overview_actions_button_spacing",
-                        "dimen",
-                        mContext.packageName
-                    )
-                )
-                child.layoutParams = params
+            parentView?.children?.forEach { child ->
+                if (child is Button) {
+                    val container = LinearLayout(mContext).apply {
+                        tag = containerTag
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER
+                        layoutParams = LinearLayout.LayoutParams(
+                            0,
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            1f
+                        )
+                    }
+                    val index = parentView.indexOfChild(child)
+                    parentView.removeView(child)
+                    container.addView(child)
+                    parentView.addView(container, index)
+
+                    (child.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
+
+                    fun updateVisibility(isVisible: Boolean) {
+                        container.visibility = if (isVisible) View.VISIBLE else View.GONE
+                    }
+
+                    child.setOnVisibilityChangeListener { isVisible -> updateVisibility(isVisible) }
+                    updateVisibility(child.isVisible)
+                } else if (child.tag != containerTag) {
+                    fun updateVisibility() {
+                        child.visibility = View.GONE
+                    }
+
+                    child.setOnVisibilityChangeListener { isVisible ->
+                        child.visibility = View.GONE
+                    }
+                    updateVisibility()
+                }
             }
         }
+    }
+
+    private fun View.setOnVisibilityChangeListener(onVisibilityChanged: (Boolean) -> Unit) {
+        viewTreeObserver.addOnGlobalLayoutListener(
+            ViewTreeObserver.OnGlobalLayoutListener {
+                onVisibilityChanged(isVisible)
+            }
+        )
     }
 
     companion object {
